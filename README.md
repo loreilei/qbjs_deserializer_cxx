@@ -46,21 +46,16 @@ Once your cmake project is configured
 #include <qbjs_deserializer/qbjs_deserializer.hpp>
 
 // In your code...
-// 1. Use your favorite file reading API to read the content of the file you want
+// 1. Use your favorite API to read the content of the file you want
 // to deserialize and get it as a vector of uint8_t
 std::vector<uint8_t> fileBinaryContent = // ...
 
 // qbjs_deserializer_cxx transforms qbjs_deserializer's errors into std::exception with a message
 try {
-    const rust::String deserialized_qbjs = qbjs_deserializer::deserialize_to_json(fileBinaryContent);
+    std::string deserialized_qbjs; // Resulting std::string needs to be created on C++ side.
+    qbjs_deserializer::deserialize_to_json(fileBinaryContent, deserialized_qbjs);
 
-    if (deserialized_qbjs.empty()) {
-        return -1;
-    }
-
-    // 2. Give this string to your favorite JSON parsing API. You may have to convert it to std string first.
-    const std::string deserialized_qbjs_as_std_string(deserialized_qbjs);
-    // JSON parsing calls...
+    // 2. Give this string to your favorite JSON parsing API.
 
     // 3. Work on your data...
 }
@@ -94,3 +89,11 @@ qbjs_deserializer_cxx checks qbjs_deserializer errors and returns an exception w
 | [qbjs::read::ReadError::InvalidNumberDataRange](https://docs.rs/qbjs_deserializer/0.0.2/qbjs_deserializer/read/enum.ReadError.html#variant.InvalidNumberDataRange) | Attempted to read a number value but reached end of slice |
 | [qbjs::read::ReadError::InvalidLatin1StringDataRange](https://docs.rs/qbjs_deserializer/0.0.2/qbjs_deserializer/read/enum.ReadError.html#variant.InvalidLatin1StringDataRange) | Attempted to read a Latin 1 string (key or value) but reached end of slice |
 | [qbjs::read::ReadError::InvalidUtf16StringDataRange](https://docs.rs/qbjs_deserializer/0.0.2/qbjs_deserializer/read/enum.ReadError.html#variant.InvalidUtf16StringDataRange) | Attempted to read a UTF-16 string (key or value) but reached end of slice |
+
+## Tested platform
+The C++ packaging has been tested (built once with conan with a successful test package) locally on the following platforms:
+| OS | C++ compiler | Rust compiler version |
+| - | - | - |
+| Windows 10 | MSVC Community 2022 | 1.64 |
+| Ubuntu 20.04 | gcc-9.4 | 1.64 |
+| MacOS 12 | Appleclang 13 | 1.64 |

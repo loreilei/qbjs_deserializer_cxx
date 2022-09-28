@@ -4,6 +4,27 @@ project(qbjs_deserializer VERSION 0.0.2)
 
 find_package(Threads REQUIRED)
 
+if (UNIX AND NOT APPLE)
+    set(QBJS_DESERIALIZER_PLATFORM_SPECIFIC_LINK_LIBRARIES
+        dl
+    )
+elseif (MSVC)
+    set(QBJS_DESERIALIZER_PLATFORM_SPECIFIC_LINK_LIBRARIES
+        userenv
+        ws2_32
+        bcrypt
+    )
+    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+endif()
+
+if (MSVC)
+    set(LIB_FILE_PREFIX )
+    set(LIB_FILE_EXTENSION lib)
+else()
+    set(LIB_FILE_PREFIX lib)
+    set(LIB_FILE_EXTENSION a)
+endif()
+
 add_library(qbjs_deserializer SHARED
             ${CMAKE_SOURCE_DIR}/qbjs_deserializer/include/qbjs_deserializer/qbjs_deserializer.hpp
             ${CMAKE_SOURCE_DIR}/qbjs_deserializer/src/qbjs_deserializer.cpp
@@ -13,19 +34,15 @@ set_property(TARGET qbjs_deserializer PROPERTY CXX_STANDARD 17)
 set_property(TARGET qbjs_deserializer PROPERTY CMAKE_CXX_STANDARD_REQUIRED TRUE)
 set_property(TARGET qbjs_deserializer PROPERTY CMAKE_SKIP_RPATH TRUE)
 
-if (UNIX)
-set(QBJS_DESERIALIZER_EXTRA_LINK_LIBRARIES
-    dl
-)
-endif()
-
 target_link_libraries(qbjs_deserializer
+    PUBLIC
+    ${QBJS_DESERIALIZER_PLATFORM_SPECIFIC_LINK_LIBRARIES}
     PRIVATE
-    ${CMAKE_SOURCE_DIR}/qbjs_deserializer/lib/libqbjs_deserializer_cxx.a
-    ${CMAKE_SOURCE_DIR}/qbjs_deserializer/lib/libcxxbridge1.a
     Threads::Threads
-    ${QBJS_DESERIALIZER_EXTRA_LINK_LIBRARIES}
+    ${CMAKE_SOURCE_DIR}/qbjs_deserializer/lib/${LIB_FILE_PREFIX}qbjs_deserializer_cxx.${LIB_FILE_EXTENSION}
+    ${CMAKE_SOURCE_DIR}/qbjs_deserializer/lib/${LIB_FILE_PREFIX}cxxbridge1.${LIB_FILE_EXTENSION}
 )
+
 
 install(TARGETS qbjs_deserializer
     EXPORT qbjs_deserializerTargets
