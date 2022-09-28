@@ -44,8 +44,8 @@ int main(int argc, char** argv) {
 
   try {
     const auto qbjsFileContent = load_file(qbjsFilename);
-    const auto jsonContent =
-        qbjs_deserializer::deserialize_to_json(qbjsFileContent);
+    std::string outputJsonContent;
+    qbjs_deserializer::deserialize_to_json(qbjsFileContent, outputJsonContent);
 
     std::ofstream outputJsonFile(outputJsonFilename);
 
@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
                                std::strerror(errno));
     }
 
-    outputJsonFile << std::string(jsonContent) << std::endl;
+    outputJsonFile << outputJsonContent << std::endl;
     outputJsonFile.close();
   } catch (const std::exception& e) {
     std::cerr << e.what() << std::endl;
@@ -68,12 +68,12 @@ int main(int argc, char** argv) {
   try {
     const auto invalidHeaderQbjsFileContent =
         load_file(invalidHeaderQbjsFilename);
-    const auto jsonContent =
-        qbjs_deserializer::deserialize_to_json(invalidHeaderQbjsFileContent);
+    std::string outputJsonContent;
+    qbjs_deserializer::deserialize_to_json(invalidHeaderQbjsFileContent, outputJsonContent);
 
     // Should never be reached as we try to trigger an invalid qbjs header
     // exception
-    std::cout << std::string(jsonContent) << std::endl;
+    std::cout << outputJsonContent << std::endl;
   } catch (const std::exception& e) {
     std::ofstream outputTextFile(outputTextFilename);
 
