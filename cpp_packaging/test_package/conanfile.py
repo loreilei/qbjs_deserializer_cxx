@@ -11,6 +11,7 @@ class qbjsDeserializerTestConan(ConanFile):
         self.copy("*.dll", src="bin", dst=os.path.join("install", "bin"))
         self.copy("*.dylib*", src="lib", dst=os.path.join("install", "lib"))
         self.copy("*.so*", src="lib", dst=os.path.join("install", "lib"))
+        self.copy("*.lib*", src="lib", dst=os.path.join("install", "lib"))
 
     def build(self):
         cmake = CMake(self)

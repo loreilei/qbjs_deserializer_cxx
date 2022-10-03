@@ -1,5 +1,6 @@
 pub use anyhow::Result;
-pub use cxx::CxxVector;
+pub use std::pin::Pin;
+pub use cxx::{CxxVector, CxxString};
 pub use qbjs_deserializer::qbjs;
 use qbjs_deserializer::qbjs::DeserializeError;
 
@@ -7,7 +8,7 @@ use qbjs_deserializer::qbjs::DeserializeError;
 pub mod ffi {
     #[namespace = "qbjs_deserializer"]
     extern "Rust" {
-        fn deserialize_to_json(data: &CxxVector<u8>) -> Result<String>;
+        fn deserialize_to_json(data: &CxxVector<u8>, mut output_json_string: Pin<&mut CxxString>) -> Result<()>;
     }
 }
 
@@ -54,9 +55,15 @@ fn deserialize_error_message(deserialize_error: &DeserializeError) -> String {
     error_message.to_owned()
 }
 
-fn deserialize_to_json(data: &CxxVector<u8>) -> anyhow::Result<String> {
+fn deserialize_to_json(data: &CxxVector<u8>, mut output_json_string: Pin<&mut CxxString>) -> anyhow::Result<()> {
     match qbjs::deserialize_to_json(data.as_slice()) {
-        Ok(value) => Ok(value.to_string()),
+        Ok(value) => {
+            let json_content = value.to_string();
+            output_json_string.as_mut().clear();
+            output_json_string.as_mut().reserve(json_content.len());
+            output_json_string.as_mut().push_str(&json_content);
+            Ok(())
+        },
         Err(e) => Err(anyhow::Error::msg(deserialize_error_message(&e))),
     }
 }
