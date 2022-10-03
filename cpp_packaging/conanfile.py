@@ -7,7 +7,7 @@ import glob
 
 class qbjsDeserializerConan(ConanFile):
     name = "qbjs_deserializer"
-    lib_version = "0.0.2"
+    lib_version = "0.0.3"
     recipe_version = "0"
     version = "{}-{}".format(lib_version, recipe_version)
     generators = "cmake"
