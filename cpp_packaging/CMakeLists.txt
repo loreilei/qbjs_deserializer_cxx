@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.23)
 
-project(qbjs_deserializer VERSION 0.0.2)
+project(qbjs_deserializer VERSION 0.0.3)
 
 find_package(Threads REQUIRED)
 
