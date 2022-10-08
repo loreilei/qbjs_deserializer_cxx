@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
     std::string outputJsonContent;
     qbjs_deserializer::deserialize_to_json(qbjsFileContent, outputJsonContent);
 
-    std::ofstream outputJsonFile(outputJsonFilename);
+    std::ofstream outputJsonFile(outputJsonFilename, std::ios::binary);
 
     if (!outputJsonFile) {
       throw std::runtime_error(outputJsonFilename + ": " +
