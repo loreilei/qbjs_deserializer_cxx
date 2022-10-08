@@ -1,5 +1,6 @@
 import os
 import shutil
+import codecs
 from conans import ConanFile, CMake, tools
 
 
@@ -47,9 +48,10 @@ class qbjsDeserializerTestConan(ConanFile):
         self.run(command)
 
         if os.path.exists(outputJsonFilename):
-            with open(outputJsonFilename, "r") as file:
+            with codecs.open(outputJsonFilename, "r", "utf-8") as file:
                 data = file.read().rstrip()
-                if data == '{"foo":"bar"}':
+                expected_data = '{"baz":"バール","foo":"bar","フー":"bar","食べる":"飲む"}'
+                if data == expected_data:
                     print(
                         "Succesfully deserialized QBJS file (JSON content: "
                         + data
