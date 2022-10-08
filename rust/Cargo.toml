@@ -1,6 +1,6 @@
 [package]
 name = "qbjs_deserializer_cxx"
-version = "0.0.3"
+version = "0.0.4"
 edition = "2021"
 authors = ["Alexandre Poirot <alexandre.poirot+qbjs_deserializer@gmail.com>"]
 description = "C++ FFI for the qbjs_deserializer crate"
@@ -19,7 +19,7 @@ bench = false
 path = "src/qbjs_deserializer.rs"
 
 [dependencies]
-qbjs_deserializer = "0.0.3"
+qbjs_deserializer = "0.0.4"
 cxx = "1.0.75"
 anyhow = "1.0.65"
 

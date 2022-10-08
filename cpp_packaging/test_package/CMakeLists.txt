@@ -29,7 +29,7 @@ else()
 	set(EXTRA_CXX_FLAGS "${EXTRA_CXX_FLAGS} -Werror")
 endif()
 
-find_package(qbjs_deserializer 0.0.3 REQUIRED)
+find_package(qbjs_deserializer 0.0.4 REQUIRED)
 
 add_executable(testApp src/main.cpp)
 target_link_libraries(testApp PRIVATE QBJS_DESERIALIZER::qbjs_deserializer)
