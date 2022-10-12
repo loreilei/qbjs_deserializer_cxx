@@ -24,7 +24,12 @@ class qbjsDeserializerConan(ConanFile):
 
     def export_sources(self):
         self.copy("*")
-        self.copy("*", src="../rust", dst="{}/rust".format(self.export_sources_folder), keep_path=True)
+        self.copy(
+            "*",
+            src="../rust",
+            dst="{}/rust".format(self.export_sources_folder),
+            keep_path=True,
+        )
 
     def build(self):
         rust_brige_crate_root = "rust"
@@ -54,7 +59,9 @@ class qbjsDeserializerConan(ConanFile):
             ),
         )
 
-        qbjs_deserializer_target_release_path = "{}/target/release/".format(rust_brige_crate_root)
+        qbjs_deserializer_target_release_path = "{}/target/release/".format(
+            rust_brige_crate_root
+        )
 
         if self.settings.compiler == "Visual Studio":
             lib_prefix = ""
@@ -64,16 +71,25 @@ class qbjsDeserializerConan(ConanFile):
             lib_extension = "a"
 
         tools.rename(
-            "{0}/{1}qbjs_deserializer_cxx.{2}".format(qbjs_deserializer_target_release_path, lib_prefix, lib_extension),
-            "{0}/lib/{1}qbjs_deserializer_cxx.{2}".format(qbjs_deserializer_root, lib_prefix, lib_extension),
+            "{0}/{1}qbjs_deserializer_cxx.{2}".format(
+                qbjs_deserializer_target_release_path, lib_prefix, lib_extension
+            ),
+            "{0}/lib/{1}qbjs_deserializer_cxx.{2}".format(
+                qbjs_deserializer_root, lib_prefix, lib_extension
+            ),
         )
 
         # Use glob to find libcxxbridge1.a because the output folder starting with cxx- has a hash and can't be hardcoded
         for libcxxbridge1 in glob.glob(
-            "{0}/build/cxx-*/out/{1}cxxbridge1.{2}".format(qbjs_deserializer_target_release_path, lib_prefix, lib_extension)
+            "{0}/build/cxx-*/out/{1}cxxbridge1.{2}".format(
+                qbjs_deserializer_target_release_path, lib_prefix, lib_extension
+            )
         ):
             tools.rename(
-                libcxxbridge1, "{0}/lib/{1}cxxbridge1.{2}".format(qbjs_deserializer_root, lib_prefix, lib_extension)
+                libcxxbridge1,
+                "{0}/lib/{1}cxxbridge1.{2}".format(
+                    qbjs_deserializer_root, lib_prefix, lib_extension
+                ),
             )
 
         cmake = CMake(self, parallel=True)
