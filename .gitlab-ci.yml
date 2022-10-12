@@ -1,0 +1,27 @@
+variables:
+  CONAN_PACKAGE_NAME: qbjs_deserializer
+  CONAN_RECIPE_VERSION: 0.0.4-0
+  CONAN_USER: gitlab-ci
+  CONAN_CHANNEL: test
+
+conan-create-package-linux:
+  tags: [saas-linux-small-amd64]
+  image: python:3.10.7-alpine3.16
+  stage: build
+  before_script:
+    - pip install conan
+    - pip install cmake
+    - apk update
+    - apk add curl
+    - apk add gcc
+    - apk add g++
+    - apk add make
+    - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && source "$HOME/.cargo/env"
+    - gcc --version
+    - g++ --version
+    - rustc --version
+    - conan --version
+    - cmake --version
+    - make --version
+  script:
+    - conan create cpp_packaging/conanfile.py $CONAN_PACKAGE_NAME/$RECIPE_VERSION@$CONAN_USER/$CONAN_CHANNEL -s compiler="gcc" -s compiler.version="11" -s compiler.libcxx="libstdc++" -s build_type="Release"
