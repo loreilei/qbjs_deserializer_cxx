@@ -52,11 +52,15 @@ class qbjsDeserializerTestConan(ConanFile):
                 data = file.read().rstrip()
                 expected_data = '{"baz":"バール","foo":"bar","フー":"bar","食べる":"飲む"}'
                 if data == expected_data:
-                    print(
-                        "Succesfully deserialized QBJS file (JSON content: "
-                        + data
-                        + ")"
-                    )
+                    # Avoid UTF-8 console printing issues on Windows
+                    if tools.os_info.is_windows:
+                        print("Succesfully deserialized QBJS file")
+                    else:
+                        print(
+                            "Succesfully deserialized QBJS file (JSON content: "
+                            + data
+                            + ")"
+                        )
                 else:
                     raise "Failed to deserialize QBJS file"
 

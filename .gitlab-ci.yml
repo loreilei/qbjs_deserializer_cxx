@@ -25,3 +25,24 @@ conan-create-package-linux:
     - make --version
   script:
     - conan create cpp_packaging/conanfile.py $CONAN_PACKAGE_NAME/$RECIPE_VERSION@$CONAN_USER/$CONAN_CHANNEL -s compiler="gcc" -s compiler.version="11" -s compiler.libcxx="libstdc++" -s build_type="Release"
+
+conan-create-package-windows:
+  tags: [windows]
+  stage: build
+  before_script:
+    - choco feature enable -n allowGlobalConfirmation
+    - choco install python3
+    - $Env:PATH = "C:\Python311\Scripts;$Env:PATH"
+    - refreshenv
+    - py -m pip install --upgrade pip
+    - py -m pip install conan
+    - py -m pip install cmake
+    - choco install rustup.install  --ignore-checksums
+    - $Env:PATH = "$Env:USERPROFILE\.cargo\bin;$Env:PATH"
+    - refreshenv
+    - conan --version
+    - cmake --version
+    - rustc --version
+    - cargo --version
+  script:
+    - conan create cpp_packaging/conanfile.py $Env:CONAN_PACKAGE_NAME/$Env:RECIPE_VERSION@$Env:CONAN_USER/$Env:CONAN_CHANNEL -s compiler="Visual Studio" -s compiler.version="16" -s compiler.cppstd="14" -s build_type="Release"
