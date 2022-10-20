@@ -46,3 +46,20 @@ conan-create-package-windows:
     - cargo --version
   script:
     - conan create cpp_packaging/conanfile.py $Env:CONAN_PACKAGE_NAME/$Env:RECIPE_VERSION@$Env:CONAN_USER/$Env:CONAN_CHANNEL -s compiler="Visual Studio" -s compiler.version="16" -s compiler.cppstd="14" -s build_type="Release"
+
+conan-create-package-macos:
+  tags: [shared-macos-amd64]
+  image: macos-12-xcode-14
+  stage: build
+  before_script:
+    - python3.9 -m pip install --upgrade pip
+    - python3.9 -m pip install --upgrade conan
+    - python3.9 -m pip install --upgrade cmake
+    - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && source "$HOME/.cargo/env"
+    - clang --version
+    - clang++ --version
+    - rustc --version
+    - conan --version
+    - cmake --version
+  script:
+    - conan create cpp_packaging/conanfile.py $CONAN_PACKAGE_NAME/$RECIPE_VERSION@$CONAN_USER/$CONAN_CHANNEL -s compiler="apple-clang" -s compiler.version="14" -s compiler.cppstd="14" -s compiler.libcxx="libc++" -s build_type="Release"
