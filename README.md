@@ -90,10 +90,7 @@ qbjs_deserializer_cxx checks qbjs_deserializer errors and returns an exception w
 | [qbjs::read::ReadError::InvalidLatin1StringDataRange](https://docs.rs/qbjs_deserializer/0.0.4/qbjs_deserializer/read/enum.ReadError.html#variant.InvalidLatin1StringDataRange) | Attempted to read a Latin 1 string (key or value) but reached end of slice |
 | [qbjs::read::ReadError::InvalidUtf16StringDataRange](https://docs.rs/qbjs_deserializer/0.0.4/qbjs_deserializer/read/enum.ReadError.html#variant.InvalidUtf16StringDataRange) | Attempted to read a UTF-16 string (key or value) but reached end of slice |
 
-## Tested platform
-The C++ packaging has been tested (built once with conan with a successful test package) locally on the following platforms:
-| OS | C++ compiler | Rust compiler version |
-| - | - | - |
-| Windows 10 | MSVC Community 2022 | 1.64 |
-| Ubuntu 20.04 | gcc-9.4 | 1.64 |
-| MacOS 12 | Appleclang 13 | 1.64 |
+## Conan packaging and CMake finder testing
+To test the C++ packaging with conan and the CMake finders, [Gitlab CI pipelines](https://gitlab.com/qbjs_deserializer/qbjs_deserializer_cxx/-/pipelines) is set up to create the conan package on Linux, Windows, and MacOS (3 different jobs).
+
+The conan package also use the C++ bindings in the test apps, trying to deserialize a simple JSON object with Latin1 and Utf16 string encodings in keys and values. [More complete testing of the deserialization of QBJS files is done in the integration tests of the Rust crate](https://gitlab.com/qbjs_deserializer/qbjs_deserializer/-/blob/main/tests/validation_tests.rs).
