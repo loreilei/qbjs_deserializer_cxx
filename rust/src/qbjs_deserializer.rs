@@ -43,6 +43,7 @@ fn deserialize_error_message(deserialize_error: &DeserializeError) -> String {
             },
         },
         DeserializeError::ReadError(read_error) => match read_error {
+            qbjs::read::ReadError::FailedToDecodeNumber => "Failed to decode number (double)",
             qbjs::read::ReadError::FailedToDecodeLatin1String => "Failed to decode Latin 1 string (key or value)",
             qbjs::read::ReadError::FailedToDecodeUtf16String => "Failed to decode UTF-16 string (key or value)",
             qbjs::read::ReadError::InvalidBoolDataPosition => "Attempted to read a bool value but reached end of slice",
