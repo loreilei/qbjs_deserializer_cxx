@@ -1,6 +1,6 @@
 variables:
   CONAN_PACKAGE_NAME: qbjs_deserializer
-  CONAN_RECIPE_VERSION: 0.0.4-0
+  CONAN_RECIPE_VERSION: 0.0.5-0
   CONAN_USER: gitlab-ci
   CONAN_CHANNEL: test
 

@@ -7,14 +7,14 @@ import glob
 
 class qbjsDeserializerConan(ConanFile):
     name = "qbjs_deserializer"
-    lib_version = "0.0.4"
+    lib_version = "0.0.5"
     recipe_version = "0"
     version = "{}-{}".format(lib_version, recipe_version)
     generators = "cmake"
     settings = "os", "arch", "compiler", "build_type"
     options = {}
     default_options = {}
-    url_base = "https://github.com/loreilei/qbjs_deserializer_cxx"
+    url_base = "https://gitlab.com/qbjs_deserializer/qbjs_deserializer_cxx"
     url = "{}.git".format(url_base)
     exports = []
     description = (
@@ -104,10 +104,6 @@ class qbjsDeserializerConan(ConanFile):
             dst="include/qbjs_deserializer/",
             keep_path=False,
         )
-        # if self.settings.compiler == "Visual Studio":
-        #     self.copy("qbjs_deserializer/lib/*.lib", src=".", dst="lib/", keep_path=False)
-        # else:
-        #     self.copy("build/libqbjs_deserializer.so", src=".", dst="lib/", keep_path=False)
 
     def package_info(self):
         self.cpp_info.includedirs = ["include"]

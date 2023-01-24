@@ -1,12 +1,12 @@
 [package]
 name = "qbjs_deserializer_cxx"
-version = "0.0.4"
+version = "0.0.5"
 edition = "2021"
 authors = ["Alexandre Poirot <alexandre.poirot+qbjs_deserializer@gmail.com>"]
 description = "C++ FFI for the qbjs_deserializer crate"
 readme = "README.md"
-homepage = "https://github.com/loreilei/qbjs_deserializer_cxx"
-repository = "https://github.com/loreilei/qbjs_deserializer_cxx"
+homepage = "https://gitlab.com/qbjs_deserializer/qbjs_deserializer_cxx"
+repository = "https://gitlab.com/qbjs_deserializer/qbjs_deserializer_cxx"
 license = "MIT"
 license_file = "LICENSE.txt"
 keywords = ["Qt5", "binary", "json", "deserialize"]
@@ -19,9 +19,9 @@ bench = false
 path = "src/qbjs_deserializer.rs"
 
 [dependencies]
-qbjs_deserializer = "0.0.4"
-cxx = "1.0.75"
-anyhow = "1.0.65"
+qbjs_deserializer = "0.0.5"
+cxx = "1.0"
+anyhow = "1.0"
 
 [build-dependencies]
 cxx-build = "1.0"
